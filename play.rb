@@ -9,4 +9,4 @@ def play
     View.display_inventory(game.player.inventory)
 end
 
-play
+play()

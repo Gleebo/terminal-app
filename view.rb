@@ -6,7 +6,7 @@ module View
     @@table = TTY::Table
     @@renderer = TTY::Table::Renderer::ASCII
     def View.greet(name)
-        puts "#{name}, Welcome to the world of #{@@pastel.red("G") + 
+        puts "#{name}, Welcome to the world of #{@@pastel.red("G") +
                                                  @@pastel.green("e") +
                                                  @@pastel.bright_green("m")+
                                                  @@pastel.blue("s")}"
@@ -18,7 +18,8 @@ module View
     end
 
     def View.display_inventory(inventory)
-        table = @@table.new([1,2,3], [inventory])
+        table = [1,2,3].zip(inventory)
+        table = @@table.new(["#", "Gem"], table)
         ascii_table = @@renderer.new(table)
         puts ascii_table.render
     end
