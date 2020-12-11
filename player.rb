@@ -4,7 +4,7 @@ class Player
     def initialize(name = "Player")
         @hp = 100
         @name = name
-        @inventory = []
+        @inventory = {}
     end
 
     def heal(amount)

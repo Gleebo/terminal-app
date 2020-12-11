@@ -1,6 +1,9 @@
+require_relative "./player"
+
 class Game
-    def initialize(player)
-        @player = player
+    attr_reader :player
+    def initialize(player_name)
+        @player = Player.new(player_name)
         starter_gems = get_random_starter_gems
         @player.add_to_inventory(starter_gems)
     end
@@ -9,5 +12,5 @@ class Game
     def get_random_starter_gems
         gems = ["ruby", "emerald", "malachite", "sapphire", "pearl"]
         gems.sample(3)
-    end 
+    end
 end

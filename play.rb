@@ -1,9 +1,12 @@
 require "./view"
 require "./player"
 require "./game"
+
 def play
-    name = View.get_player_name
-    View.greet(name)
-    player = Player.new(name)
-    game = Game.new(player)
+    player_name = View.get_player_name
+    View.greet(player_name)
+    game = Game.new(player_name)
+    View.display_inventory(game.player.inventory)
 end
+
+play
