@@ -34,9 +34,10 @@ class Player < Character
 end
 
 class Enemy < Character
-  def initialize(name, type, power)
+  attr_reader :powers, :type
+  def initialize(name, type, powers)
     super(name)
     @type   = type
-    @power  = power
+    @powers  = powers
   end
 end
