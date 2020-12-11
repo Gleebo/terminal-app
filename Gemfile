@@ -8,3 +8,6 @@ gem "rspec"
 gem "tty-prompt"
 gem "tty-progressbar"
 gem "tty-table"
+
+
+gem "pastel", "~> 0.8.0"
