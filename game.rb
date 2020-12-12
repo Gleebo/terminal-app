@@ -1,7 +1,7 @@
 require_relative "./models/player"
 
 class Game
-    attr_reader :player, :rooms
+    attr_reader :player, :rooms, :current_room
 
     def initialize(player_name: "Player", starter_gems: [], rooms: [])
       @rooms = rooms

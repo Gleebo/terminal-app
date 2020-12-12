@@ -1,5 +1,5 @@
 class Room
-  attr_reader :description
+  attr_reader :description, :enemies
 
   def initialize(enemies: [], description: "a room")
     @description  = description
