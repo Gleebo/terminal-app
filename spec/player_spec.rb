@@ -1,30 +1,39 @@
-require "./model"
-require "./game"
+require_relative "../models/enemy"
+require_relative "../models/player"
+require_relative "../models/gem"
 
 describe "The player instance" do
-    NAME = "Globox"
+
     it "remembers player's name" do
-        player = Player.new(NAME)
+        player = Player.new(name: "Globox")
         expect(player.name).to eq("Globox")
     end
+
     it "reduces player's hp" do
-        player = Player.new(NAME)
+        player = Player.new
         player.damage(20)
         expect(player.hp).to eq(80)
     end
+
     it "heals player's hp" do
-        player = Player.new(NAME)
+        player = Player.new
         player.damage(80)
         player.heal(20)
         expect(player.hp).to eq(40)
         player.heal(100)
         expect(player.hp). to eq(100)
     end
+
     it "adds items to the inventory" do
-        player = Player.new(NAME)
-        player.add_to_inventory("ruby")
-        expect(player.inventory.length).to eq(1)
-        player.add_to_inventory(["sapphire", "emerald"])
-        expect(player.inventory.length).to eq(3)
+        player  = Player.new
+        gem     = CrystalGem.new
+        player.add_to_inventory(gem)
+        expect(player.inventory).to have_key("gem")
+        ruby    = CrystalGem.new(name: "ruby", description: "Incinerate", action: proc {})
+        emerald = CrystalGem.new(name: "emerald", description: "Heal", action: proc {})
+        player.add_to_inventory([ruby, emerald])
+        expect(player.inventory).to include("ruby", "emerald")
+        player.add_to_inventory([ruby, ruby, ruby])
+        expect(player.inventory["ruby"]).to eq(4)
     end
 end
