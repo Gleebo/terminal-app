@@ -1,9 +1,14 @@
-require_relative "../gem"
-require_relative "../model"
+require_relative "../models/gem"
+require_relative "../models/player"
+require_relative "../models/enemy"
 
 describe "Gem" do
   subject {
-    CrystalGem.new("Ruby", "Incinerate your enemies!", proc { |target| target.damage(20) } )
+    CrystalGem.new(
+      name: "Ruby",
+      description: "Incinerate your enemies!",
+      action: proc { |target| target.damage(20) }
+    )
   }
 
   it "has a name" do
@@ -15,7 +20,7 @@ describe "Gem" do
   end
 
   it "performs an action when used" do
-    enemy = Enemy.new("Amerald", "regular", ["amethyst", "emerald"])
+    enemy = Enemy.new
     subject.use(enemy)
     expect(enemy.hp).to eq(80)
   end

@@ -1,9 +1,11 @@
-require_relative "./model"
+require_relative "./models/player"
 
 class Game
-    attr_reader :player
-    def initialize(player_name = "Player", starter_gems = [])
-      @player = Player.new(player_name)
+    attr_reader :player, :rooms
+
+    def initialize(player_name: "Player", starter_gems: [], rooms: [])
+      @rooms = rooms
+      @player = Player.new(name: player_name)
       @starter_gems = starter_gems
       player.add_to_inventory(get_random_starter_gems)
     end
