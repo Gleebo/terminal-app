@@ -21,15 +21,15 @@ class Player < Character
     attr_reader :inventory
     def initialize(name)
         super(name)
-        @inventory = []
+        @inventory = Hash.new(0)
     end
 
-    def add_to_inventory(item)
-        if item.is_a?(Array)
-            @inventory += item
-        else
-            @inventory << item
-        end
+    def add_to_inventory(gem)
+      if gem.is_a?(Array)
+        gem.each { |g| @inventory[g.name] += 1 }
+      else
+        @inventory[gem.name] += 1
+      end
     end
 end
 

@@ -1,5 +1,5 @@
-require "./model"
-require "./game"
+require_relative "../model"
+require_relative "../gem"
 
 describe "The player instance" do
     NAME = "Globox"
@@ -21,10 +21,15 @@ describe "The player instance" do
         expect(player.hp). to eq(100)
     end
     it "adds items to the inventory" do
-        player = Player.new(NAME)
-        player.add_to_inventory("ruby")
-        expect(player.inventory.length).to eq(1)
-        player.add_to_inventory(["sapphire", "emerald"])
-        expect(player.inventory.length).to eq(3)
+        player  = Player.new(NAME)
+        gem     = CrystalGem.new("a gem", "it's shiny", proc {})
+        player.add_to_inventory(gem)
+        expect(player.inventory).to have_key("a gem")
+        ruby    = CrystalGem.new("ruby", "Incinerate", proc {})
+        emerald = CrystalGem.new("emerald", "Heal", proc {})
+        player.add_to_inventory([ruby, emerald])
+        expect(player.inventory).to include("ruby", "emerald")
+        player.add_to_inventory([ruby, ruby, ruby])
+        expect(player.inventory["ruby"]).to eq(4)
     end
 end
