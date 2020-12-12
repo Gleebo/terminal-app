@@ -28,11 +28,4 @@ describe "Game" do
     game = Game.new(rooms: rooms)
     expect(game.rooms.length).to eq(10)
   end
-
-  xit "starts battles" do
-    ruby  = CrystalGem.new(name: "Ruby")
-    enemy = Enemy.new()
-    room  = Room.new(enemies:[], description: "Test room")
-    game  = Game.new
-  end
 end
