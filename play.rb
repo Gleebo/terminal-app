@@ -22,6 +22,6 @@ def battle
   game = Game.new(player_name: "Globox", starter_gems: STARTER_GEMS, rooms: [ROOM])
   gem_to_use = View.gems_menu(game.player.inventory)
   game.player.discard_gem(gem_to_use.name)
-  
+  View.target_menu(game.current_room.enemies)
 end
 battle()

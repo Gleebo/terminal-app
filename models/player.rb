@@ -8,12 +8,12 @@ class Player < Character
     end
 
     def add_to_inventory(gem)
-      if gem.is_a?(Array)
-        gem.each do |g|
-          @inventory[g.name] = {gem: g, quantity: 1}
+      gem.each do |g|
+        if @inventory[g.name]
+          @inventory[g.name][:quantity] += 1
+          next
         end
-      else
-        @inventory[g.name][:quantity] += 1
+        @inventory[g.name] = {gem: g, quantity: 1}
       end
     end
 

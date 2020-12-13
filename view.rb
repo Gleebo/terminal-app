@@ -31,7 +31,8 @@ module View
       @@prompt.select("Select the gem to use", menu)
     end
 
-    def target_menu(targets)
-      @@prompt.select("Select target", targets)
+    def View.target_menu(targets)
+      target_names = targets.map { |k, v| {name: "#{v.name} hp: #{v.hp}", value: k} }
+      @@prompt.select("Select target", target_names)
     end
 end
