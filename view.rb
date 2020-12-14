@@ -42,10 +42,20 @@ module View
     end
 
     def View.display_room_status (enemies, player)
-      to_display = enemies.map { |k, v| [v.name, v.hp, v.status.keys] }
-      to_display << [player.name, player.hp, player.status.keys]
+      to_display = enemies.map { |k, v| [v.name, v.hp, stringify_status(v.status)] }
+      to_display << [player.name, player.hp, stringify_status(player.status)]
       table = @@table.new(["Character", "HP", "Status"], to_display)
       ascii_table = @@renderer.new(table)
       puts ascii_table.render
     end
+
+    def View.display_turn_skip_message
+      puts "Your turn is skipped because of #{@@pastel.blue("frozen")} status effect"
+    end
+end
+
+def stringify_status(status)
+  status.reduce("") do |acc, (k, v)|
+    acc << "#{k} for #{v[:turns]} #{v[:turns] == 1 ? 'turn' : 'turns'} | "
+  end
 end

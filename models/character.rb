@@ -49,4 +49,12 @@ class Character
     status_over
   end
 
+  def is_frozen?
+    if @status[:frozen]
+      @status[:frozen][:turns] -= 1
+      status_over()
+      return true
+    end
+    false
+  end
 end

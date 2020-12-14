@@ -13,7 +13,7 @@ RUBY = CrystalGem.new(
 SAPPHIRE = CrystalGem.new(
   name: "Sapphire",
   description: "Deal 10 damage and apply frozen status",
-  action: proc { |target| target.damage(10); target.add_status(:frozen, {:turns: 1}) }
+  action: proc { |target| target.damage(10); target.add_status(:frozen, {turns: 1}) }
 )
 
 EMERALD = CrystalGem.new(
@@ -42,19 +42,22 @@ ROOM    = Room.new(enemies: [ENEMY, ENEMY2])
 
 def battle
   game = Game.new(player_name: "Globox", starter_gems: STARTER_GEMS, rooms: [ROOM])
-  EMERALD.use(game.player)
-  game.player.damage(40)
-  game.
+  SAPPHIRE.use_on(game.player)
+  RUBY.use_on(game.player)
   player_turn(game)
 end
 
 def player_turn(game)
   View.display_room_status(game.current_room.enemies, game.player)
+  if game.player.is_frozen?
+    View.display_turn_skip_message
+    return
+  end
   game.player.apply_status_effects
   gem = View.gems_menu(game.player.inventory)
   game.player.discard_gem(gem.name)
   target = View.target_menu(game.current_room.enemies)
-  gem.use(game.current_room.enemies[target])
+  gem.use_on(game.current_room.enemies[target])
   View.display_room_status(game.current_room.enemies, game.player)
 end
 
