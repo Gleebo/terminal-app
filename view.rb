@@ -27,12 +27,25 @@ module View
     end
 
     def View.gems_menu(inventory)
-      menu = inventory.map {|k, v| {name: k, value: v[:gem]} }
+      menu = inventory.map do |k, v|
+        {
+          name: k.ljust(15, ".") + v[:gem].description,
+          value: v[:gem]
+        }
+      end
       @@prompt.select("Select the gem to use", menu)
     end
 
     def View.target_menu(targets)
       target_names = targets.map { |k, v| {name: "#{v.name} hp: #{v.hp}", value: k} }
       @@prompt.select("Select target", target_names)
+    end
+
+    def View.display_room_status (enemies, player)
+      to_display = enemies.map { |k, v| [v.name, v.hp, v.status.keys] }
+      to_display << [player.name, player.hp, player.status.keys]
+      table = @@table.new(["Character", "HP", "Status"], to_display)
+      ascii_table = @@renderer.new(table)
+      puts ascii_table.render
     end
 end

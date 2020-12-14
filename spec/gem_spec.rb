@@ -27,7 +27,7 @@ describe "Gem" do
 
   it "modifies status when used" do
     enemy = Enemy.new
-    sapphire = CrystalGem.new(action: proc { |target| target.add_status(:frozen); target.damage(10) })
+    sapphire = CrystalGem.new(action: proc { |target| target.add_status(:frozen, {turns: 2}); target.damage(10) })
     sapphire.use(enemy)
     expect(enemy.hp).to eq(90)
     expect(enemy.status).to include(:frozen)

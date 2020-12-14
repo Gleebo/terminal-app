@@ -3,7 +3,7 @@ class Room
 
   def initialize(enemies: [], description: "a room")
     @description  = description
-    @enemies = {}
+    @enemies      = {}
     enemy_hash(enemies)
     @turns        = []
   end
