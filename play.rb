@@ -36,18 +36,19 @@ AMETHYST = CrystalGem.new(
 )
 
 LAPIS_LAZULI = CrystalGem.new(
+  name: "Lapis Lazuli",
   target: :aoe,
   description: "Deals damage and applies frozen status to all enemies",
   action: proc { |targets|
-    targets.each_value { |t|
-      t.damage(10); t.add_status(:frozen, {turns: 2})
+    targets.reduce("") { |o, t|
+      o += " >#{t.damage(10)}. #{t.add_status(:frozen, {turns: 2})}\n"
     }
   }
 )
 
 STARTER_GEMS  = [RUBY, SAPPHIRE, EMERALD, AMETHYST]
 
-ENEMY   = Enemy.new(name: "Rubius", attack_gem: RUBY)
+ENEMY   = Enemy.new(name: "Emeraldia", defense_gem: EMERALD)
 ENEMY2  = Enemy.new(name: "Rubius", attack_gem: RUBY)
 ROOM    = Room.new(enemies: [ENEMY, ENEMY2])
 
@@ -59,33 +60,36 @@ ROOM    = Room.new(enemies: [ENEMY, ENEMY2])
 
 def battle
   game = Game.new(player_name: "Globox", starter_gems: STARTER_GEMS, rooms: [ROOM])
-  #AMETHYST.use_on(game.player)
-  enemy_turn(game, 0)
+  game.player.add_to_inventory([LAPIS_LAZULI])
+  player_turn(game)
 end
 
 def player_turn(game)
   View.display_room_status(game.current_room.enemies, game.player)
   
-  game.player.apply_status_effects
-  # skip turn if frozen
+  outcome = game.player.apply_status_effects
+  View.display(outcome) if outcome
+  
   if game.player.is_frozen?
     View.display_turn_skip_message
     return
   end
 
-  #pick a gem to use
   gem = View.gems_menu(game.player.inventory)
-  game.player.discard_gem(gem.name)
-
-  #single target or aoe?
-  if gem.target == :single
-    target = View.target_menu(game.current_room.enemies, game.player)
-    gem.use_on(game.current_room.enemies[target]) if target >= 0
-    gem.use_on(game.player) if target == -1
-  else
-    gem.use_on(game.current_room.enemies)
+ 
+  if gem[:target] == :single
+    target_id = View.target_menu(game.current_room.enemies, game.player)
+    if target_id >= 0
+      target = game.current_room.enemies[target_id]
+      outcome = game.player.use_gem(gem[:name], target)
+    elsif target == -1
+      outcome = game.player.use_gem(gem[:name])
+    end
+  elsif gem[:target] == :aoe
+    outcome = game.player.use_aoe_gem(gem[:name], game.current_room.enemies)
   end
 
+  View.display outcome
   View.display_room_status(game.current_room.enemies, game.player)
 end
 

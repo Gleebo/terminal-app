@@ -8,9 +8,4 @@ gem "rspec"
 gem "tty-prompt"
 gem "tty-table"
 
-
 gem "pastel", "~> 0.8.0"
-
-gem "full_clone", "~> 1.0"
-
-gem "full_dup", "~> 1.0"

@@ -40,12 +40,12 @@ describe "Gem" do
     lapis_lazuli = CrystalGem.new(
       target: :aoe,
       action: proc { |targets|
-        targets.each { |t|
-          t.damage(10); t.add_status(:frozen, {turns: 2})
+        targets.reduce("") { |o, t|
+          o += "#{t.damage(10)}. #{t.add_status(:frozen, {turns: 2})}\n"
         }
       },
     )
-    lapis_lazuli.use_on(room.enemies)
+    outcome = lapis_lazuli.use_on(room.enemies)
     expect(room.enemies).to satisfy do |enemies|
       enemies.reduce(true) do |acc, enemy|
         acc &&= (enemy.hp == 90 && enemy.status.has_key?(:frozen))

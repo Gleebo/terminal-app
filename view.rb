@@ -31,15 +31,15 @@ module View
       menu = inventory.map do |k, v|
         {
           name: k.ljust(15, ".") + v[:gem].description,
-          value: v[:gem]
+          value: {name: k, target: v[:gem].target}
         }
       end
       @@prompt.select("Select a gem to use", menu)
     end
 
     def View.target_menu(targets, player)
-      target_names = targets.map do |k, v|
-        {name: v.name, hp: v.hp, value: k}
+      target_names = targets.each_with_index.map do |target, index|
+        {name: target.name, hp: target.hp, value: index}
       end
       target_names << {name: player.name, value: -1}
       @@prompt.select("Select target", target_names)
@@ -55,6 +55,10 @@ module View
 
     def View.display_turn_skip_message name
       puts "#{name} skips turn because of #{@@pastel.blue("frozen")} status effect"
+    end
+
+    def View.Display_player_action_outcome
+
     end
 
     def View.display outcome

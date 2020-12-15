@@ -9,7 +9,8 @@ module AI
     if enemy.defense_skill &&
         enemy.defense_skill[:cd] == 0 &&
         game.current_room.get_wounded_id
-      return enemy.use_defense_skill(game.current_room.get_wounded_id)
+      target_id = game.current_room.get_wounded_id
+      return enemy.use_defense_skill(game.current_room.enemies[target_id])
     end
 
     return enemy.attack(game.player)

@@ -27,6 +27,6 @@ describe "Enemy" do
     )
     enemy = Enemy.new(attack_gem: sapphire)
     outcome = enemy.use_attack_skill(player)
-    expect(outcome).to eq("Enemy uses power of Sapphire on Player and deals 10 damage. Player is now affected by frozen status")
+    expect(outcome).to eq("Enemy uses the power of Sapphire on Player and deals 10 damage. Player is now affected by frozen status")
   end
 end

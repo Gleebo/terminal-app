@@ -2,8 +2,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.4.4)
-    full_clone (1.0.2)
-    full_dup (1.0.2)
     pastel (0.8.0)
       tty-color (~> 0.5)
     rspec (3.10.0)
@@ -26,7 +24,7 @@ GEM
     strings-ansi (0.2.0)
     tty-color (0.6.0)
     tty-cursor (0.7.1)
-    tty-prompt (0.22.0)
+    tty-prompt (0.23.0)
       pastel (~> 0.8)
       tty-reader (~> 0.8)
     tty-reader (0.9.0)
@@ -46,8 +44,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  full_clone (~> 1.0)
-  full_dup (~> 1.0)
   pastel (~> 0.8.0)
   rspec
   tty-prompt

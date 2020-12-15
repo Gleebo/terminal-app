@@ -59,4 +59,14 @@ describe "Player" do
       expect(player.hp).to eq(90)
       expect(outcome).to eq("Burning status affects Player and deals 20 damage Regenerating status affects Player and heals 10 hp")
     end
+
+    it "can use gem on themselve" do
+      player = Player.new
+      player.damage(50)
+      emerald = CrystalGem.new(name: "emerald", action: proc { |target| target.heal(20)})
+      player.add_to_inventory([emerald])
+      outcome = player.use_gem("emerald")
+      expect(player.hp).to eq(70)
+      expect(outcome).to eq("Player uses emerald on Player and heals 20 hp")
+    end
 end
