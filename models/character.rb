@@ -17,7 +17,7 @@ class Character
     end
       @hp += amount
       @hp = 100 if @hp > 100
-      return "#{@name} and heals #{amount} hp"
+      return "#{@name} heals #{amount} hp"
   end
 
   def damage(amount)
@@ -25,16 +25,16 @@ class Character
       amount = 0
       @status[:protected][:turns] -= 1
       status_over()
-      return "#{@name} and deals 0 damage becase the target is protected"
+      return "#{@name} takes 0 damage becase of protected status"
     end
     @hp -= amount
     @hp = 0 if @hp < 0
-    return "#{@name} and deals #{amount} damage"
+    return "#{@name} takes #{amount} damage"
   end
 
   def add_status(status_key, status_value)
     @status[status_key] = status_value
-    return "#{@name} is now affected by #{status_key} status"
+    return "#{status_key.capitalize} status has been applied"
   end
 
   def status_over
@@ -47,11 +47,12 @@ class Character
     @status.each do |k, v|
       case k
       when :burning
-        outcome += "Burning status affects #{damage(v[:damage])} " 
+        outcome += "Burning status effect: #{damage(v[:damage])} "
+        v[:turns] -= 1 
       when :regenerating
-        outcome += "Regenerating status affects #{heal(v[:heal])}" 
+        outcome += "Regenerating effects #{heal(v[:heal])}"
+        v[:turns] -= 1
       end
-      v[:turns] -= 1
     end
     status_over
     outcome

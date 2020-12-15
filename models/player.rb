@@ -20,11 +20,12 @@ class Player < Character
     def use_gem(gem_name, target = self)
       outcome = @inventory[gem_name][:gem].action.call(target)
       discard_gem(gem_name)
-      "#{@name} uses #{gem_name} on #{outcome}"
+      "#{@name} uses #{gem_name}. #{outcome}"
     end
 
     def use_aoe_gem(gem_name, targets)
       outcome = @inventory[gem_name][:gem].action.call(targets)
+      discard_gem(gem_name)
       "#{@name} uses #{gem_name} on:\n#{outcome}"
     end
 

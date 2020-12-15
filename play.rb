@@ -56,12 +56,11 @@ def play
     # player_name = View.get_player_name
     # View.greet(player_name)
     game = Game.new(player_name: "Globox", starter_gems: STARTER_GEMS, rooms: [ROOM])
-    game.player.add_to_inventory([LAPIS_LAZULI])
     battle game
 end
 
 def battle game
-  until game.current_room.is_clear? || game.player.is_dead?
+  until game.current_room.is_clear? || game.player.is_dead? || game.player.inventory.empty?
     if game.player_turn
       player_turn(game)
     elsif game.enemy_turn[:flag]
@@ -89,7 +88,7 @@ def player_turn(game)
     if target_id >= 0
       target = game.current_room.enemies[target_id]
       outcome = game.player.use_gem(gem[:name], target)
-    elsif target == -1
+    elsif target_id == -1
       outcome = game.player.use_gem(gem[:name])
     end
   elsif gem[:target] == :aoe

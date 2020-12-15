@@ -23,13 +23,13 @@ class Enemy < Character
   def use_attack_skill target
     outcome = @attack_skill[:action].call(target)
     @attack_skill[:cd] = 3
-    "#{@name} uses the power of #{@attack_skill[:name]} on #{outcome}"
+    "#{@name} uses the power of #{@attack_skill[:name]}. #{outcome}"
   end
 
   def use_defense_skill target
     outcome = @defense_skill[:action].call(target)
     @defense_skill[:cd] = 3
-    "#{@name} uses the power of #{@defense_skill[:name]} on #{outcome}"
+    "#{@name} uses the power of #{@defense_skill[:name]}. #{outcome}"
   end
 
   def below_half_hp?
