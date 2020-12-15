@@ -3,9 +3,13 @@ class Room
 
   def initialize(enemies: [], description: "a room")
     @description  = description
-    @enemies      = {}
-    enemy_hash(enemies)
+    @enemies      = enemies
+    #enemy_hash(enemies)
     @turns        = []
+  end
+
+  def get_wounded_id
+    @enemies.index { |enemy| enemy.below_half_hp? }
   end
 
   private

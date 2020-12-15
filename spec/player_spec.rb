@@ -55,7 +55,8 @@ describe "Player" do
       player = Player.new
       player.add_status(:burning, { turns: 2, damage: 20 })
       player.add_status(:regenerating, {turns: 2, heal: 10})
-      player.apply_status_effects
+      outcome = player.apply_status_effects
       expect(player.hp).to eq(90)
+      expect(outcome).to eq("Burning status affects Player and deals 20 damage Regenerating status affects Player and heals 10 hp")
     end
 end

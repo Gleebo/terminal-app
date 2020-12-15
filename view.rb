@@ -7,6 +7,7 @@ module View
     @@table     = TTY::Table
     @@renderer  = TTY::Table::Renderer::ASCII
     @@prompt    = TTY::Prompt.new
+
     def View.greet(name)
         puts "#{name}, Welcome to the world of #{@@pastel.red("G") +
                                                  @@pastel.green("e") +
@@ -33,24 +34,31 @@ module View
           value: v[:gem]
         }
       end
-      @@prompt.select("Select the gem to use", menu)
+      @@prompt.select("Select a gem to use", menu)
     end
 
-    def View.target_menu(targets)
-      target_names = targets.map { |k, v| {name: "#{v.name} hp: #{v.hp}", value: k} }
+    def View.target_menu(targets, player)
+      target_names = targets.map do |k, v|
+        {name: v.name, hp: v.hp, value: k}
+      end
+      target_names << {name: player.name, value: -1}
       @@prompt.select("Select target", target_names)
     end
 
     def View.display_room_status (enemies, player)
-      to_display = enemies.map { |k, v| [v.name, v.hp, stringify_status(v.status)] }
+      to_display = enemies.map { |v| [v.name, v.hp, stringify_status(v.status)]}
       to_display << [player.name, player.hp, stringify_status(player.status)]
       table = @@table.new(["Character", "HP", "Status"], to_display)
       ascii_table = @@renderer.new(table)
       puts ascii_table.render
     end
 
-    def View.display_turn_skip_message
-      puts "Your turn is skipped because of #{@@pastel.blue("frozen")} status effect"
+    def View.display_turn_skip_message name
+      puts "#{name} skips turn because of #{@@pastel.blue("frozen")} status effect"
+    end
+
+    def View.display outcome
+      puts outcome
     end
 end
 
