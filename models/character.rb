@@ -65,5 +65,17 @@ class Character
     end
     false
   end
+  
+  def is_hasted?
+    if @status[:hasted]
+      @status[:hasted][:turns] -= 1
+      status_over()
+      return true
+    end
+    false
+  end
 
+  def is_dead?
+    @hp == 0
+  end
 end

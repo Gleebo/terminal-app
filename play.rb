@@ -52,16 +52,22 @@ ENEMY   = Enemy.new(name: "Emeraldia", defense_gem: EMERALD)
 ENEMY2  = Enemy.new(name: "Rubius", attack_gem: RUBY)
 ROOM    = Room.new(enemies: [ENEMY, ENEMY2])
 
-# def play
-#     player_name = View.get_player_name
-#     View.greet(player_name)
-#     game = Game.new(player_name, STARTER_GEMS)
-# end
+def play
+    # player_name = View.get_player_name
+    # View.greet(player_name)
+    game = Game.new(player_name: "Globox", starter_gems: STARTER_GEMS, rooms: [ROOM])
+    game.player.add_to_inventory([LAPIS_LAZULI])
+    battle game
+end
 
-def battle
-  game = Game.new(player_name: "Globox", starter_gems: STARTER_GEMS, rooms: [ROOM])
-  game.player.add_to_inventory([LAPIS_LAZULI])
-  player_turn(game)
+def battle game
+  until game.current_room.is_clear? || game.player.is_dead?
+    if game.player_turn
+      player_turn(game)
+    elsif game.enemy_turn[:flag]
+      enemy_turn(game, game.enemy_turn[:id])
+    end
+  end
 end
 
 def player_turn(game)
@@ -72,11 +78,12 @@ def player_turn(game)
   
   if game.player.is_frozen?
     View.display_turn_skip_message
+    player_turn_switcher(game)
     return
   end
 
   gem = View.gems_menu(game.player.inventory)
- 
+
   if gem[:target] == :single
     target_id = View.target_menu(game.current_room.enemies, game.player)
     if target_id >= 0
@@ -91,6 +98,8 @@ def player_turn(game)
 
   View.display outcome
   View.display_room_status(game.current_room.enemies, game.player)
+
+  player_turn_switcher(game)
 end
 
 def enemy_turn(game, id)
@@ -102,12 +111,28 @@ def enemy_turn(game, id)
   
   if game.current_room.enemies[id].is_frozen?
     View.display_turn_skip_message(game.current_room.enemies[id].name)
+    enemy_turn_switcher game
     return
   end
 
   outcome = AI.enemy_turn(game, id)
-  View.display outcome
+  View.display(outcome)
   View.display_room_status(game.current_room.enemies, game.player)
+  enemy_turn_switcher(game)
 end
 
-battle()
+def enemy_turn_switcher(game)
+  game.player_turn = true
+  turn = game.enemy_turn[:id]
+  game.enemy_turn[:id] = turn == game.current_room.enemies.size - 1 ? 0 : turn + 1
+  game.enemy_turn[:flag] = false
+end
+
+def player_turn_switcher(game)
+  unless game.player.is_hasted?
+    game.player_turn = false
+    game.enemy_turn[:flag] = true
+  end
+end
+
+play()

@@ -57,10 +57,6 @@ module View
       puts "#{name} skips turn because of #{@@pastel.blue("frozen")} status effect"
     end
 
-    def View.Display_player_action_outcome
-
-    end
-
     def View.display outcome
       puts outcome
     end

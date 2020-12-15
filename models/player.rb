@@ -16,7 +16,7 @@ class Player < Character
         @inventory[g.name] = {gem: g, quantity: 1}
       end
     end
-
+    
     def use_gem(gem_name, target = self)
       outcome = @inventory[gem_name][:gem].action.call(target)
       discard_gem(gem_name)
