@@ -1,0 +1,48 @@
+require_relative "../view"
+
+module EnemyController
+  def EnemyController.turn(game)
+    enemy   = game.current_room.enemies[game.enemy_turn[:id]]
+    enemies = game.current_room.enemies
+    enemy.reduce_cooldowns
+  
+    outcome = enemy.apply_status_effects
+    View.display(outcome) if outcome
+  
+    if enemy.is_frozen?
+      View.display_turn_skip_message(enemy.name)
+      enemy_turn_switcher game
+      View.wait
+      return
+    end
+  
+    #outcome = AI.enemy_turn(game, id)
+    if enemy.attack_skill && enemy.attack_skill[:cd] == 0
+      outcome = enemy.use_attack_skill(game.player)
+    elsif enemy.defense_skill &&
+          enemy.defense_skill[:cd] == 0 &&
+          game.current_room.get_wounded_id
+
+      target_id = game.current_room.get_wounded_id
+      outcome = enemy.use_defense_skill(enemies)
+    else
+      outcome = enemy.attack(game.player)
+    end
+
+    View.display(outcome)
+    
+    return if game.player.is_dead?
+  
+    enemy_turn_switcher(game)
+
+    View.display_room_status(enemies, game.player)
+    View.wait
+  end
+end
+
+def enemy_turn_switcher(game)
+  game.player_turn = true
+  turn = game.enemy_turn[:id]
+  game.enemy_turn[:id] = turn == game.current_room.enemies.size - 1 ? 0 : turn + 1
+  game.enemy_turn[:flag] = false
+end

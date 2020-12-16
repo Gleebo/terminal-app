@@ -1,7 +1,7 @@
 class Room
   attr_reader :description, :enemies
 
-  def initialize(enemies: [], description: "a room")
+  def initialize(enemies: [], description: "a room", reward: [])
     @description  = description
     @enemies      = enemies
     #enemy_hash(enemies)
