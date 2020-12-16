@@ -28,4 +28,10 @@ describe "Game" do
     game = Game.new(rooms: rooms)
     expect(game.rooms.length).to eq(10)
   end
+
+  it "changes enemy turn" do
+    game = Game.new
+    game.enemy_turn[:id] = 2
+    expect(game.enemy_turn[:id]).to eq(2)
+  end
 end
