@@ -17,7 +17,7 @@ class Enemy < Character
 
   def attack target
     outcome = target.damage @attack_power
-    return "#{@name} attacks #{outcome}"
+    return "#{@name} attacks. #{outcome}"
   end
 
   def use_attack_skill target

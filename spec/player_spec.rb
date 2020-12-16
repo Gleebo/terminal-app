@@ -57,7 +57,7 @@ describe "Player" do
       player.add_status(:regenerating, {turns: 2, heal: 10})
       outcome = player.apply_status_effects
       expect(player.hp).to eq(90)
-      expect(outcome).to eq("Burning status affects Player and deals 20 damage Regenerating status affects Player and heals 10 hp")
+      expect(outcome).to eq("Burning status effect: Player takes 20 damage. Regenerating status effect: Player heals 10 hp.")
     end
 
     it "can use gem on themselve" do
@@ -67,6 +67,6 @@ describe "Player" do
       player.add_to_inventory([emerald])
       outcome = player.use_gem("emerald")
       expect(player.hp).to eq(70)
-      expect(outcome).to eq("Player uses emerald on Player and heals 20 hp")
+      expect(outcome).to eq("Player uses emerald. Player heals 20 hp")
     end
 end
