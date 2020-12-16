@@ -46,21 +46,73 @@ LAPIS_LAZULI = CrystalGem.new(
   }
 )
 
-STARTER_GEMS  = [RUBY, SAPPHIRE, EMERALD, AMETHYST]
+OP = CrystalGem.new(
+  name: "Oneshot",
+  target: :aoe,
+  description: "Test gem that kills everyone",
+  action: proc {|targets|
+    targets.reduce("") {|o, t|
+      o += " > #{t.damage(100)}.\n"
+    }
+  }
+)
+
+STARTER_GEMS  = [RUBY, SAPPHIRE, EMERALD, AMETHYST]*10
 
 ENEMY   = Enemy.new(name: "Emeraldia", defense_gem: EMERALD)
 ENEMY2  = Enemy.new(name: "Rubius", attack_gem: RUBY)
-ROOM    = Room.new(enemies: [ENEMY, ENEMY2])
 
-def play
-    # player_name = View.get_player_name
-    # View.greet(player_name)
-    game = Game.new(player_name: "Globox", starter_gems: STARTER_GEMS, rooms: [ROOM])
-    battle game
+ROOM    = Room.new(
+  description: "Room 1",
+  enemies: [ENEMY, ENEMY2]
+)
+
+ROOM2   = Room.new(
+  description: "Room 2",
+  enemies: [
+  Enemy.new(name: "Rubius", attack_gem: RUBY, attack_power: 50),
+  Enemy.new(name: "Emeraldia", defense_gem: EMERALD, attack_power: 50),
+  Enemy.new(name: "Sapphiron", attack_gem: SAPPHIRE)
+])
+ROOM3   = Room.new(
+  description: "Room 3",
+  enemies: [
+  Enemy.new(name: "Rubius", attack_gem: RUBY),
+  Enemy.new(name: "Emeraldia", defense_gem: EMERALD),
+  Enemy.new(name: "Sapphiron", attack_gem: SAPPHIRE)
+])
+ROOM4   = Room.new(
+  description: "Room 4",
+  enemies: [
+    Enemy.new(name: "Rubius", attack_gem: RUBY),
+    Enemy.new(name: "Emeraldia", defense_gem: EMERALD),
+    Enemy.new(name: "Sapphiron", attack_gem: SAPPHIRE)
+])
+
+PATH = [[ROOM, ROOM2], [ROOM3, ROOM4]]
+
+def start
+  player_name = View.get_player_name
+  View.greet(player_name)
+  game = Game.new(player_name: player_name, starter_gems: STARTER_GEMS, path: PATH)
+  play game
+end
+
+def play game
+    game.player.add_to_inventory([OP]*20)
+    game.path.each do |p|
+      return game_over(game) if game.player.is_dead?
+      index = View.display_room_menu(p)
+      game.current_room = p[index]
+      reset_turns(game)
+      battle(game)
+    end
 end
 
 def battle game
-  until game.current_room.is_clear? || game.player.is_dead? || game.player.inventory.empty?
+  until game.current_room.is_clear? || game.player.is_dead?
+    View.display_room_status(game.current_room.enemies, game.player)
+    sleep(0.2)
     if game.player_turn
       player_turn(game)
     elsif game.enemy_turn[:flag]
@@ -70,20 +122,27 @@ def battle game
 end
 
 def player_turn(game)
-  View.display_room_status(game.current_room.enemies, game.player)
-  
+
   outcome = game.player.apply_status_effects
+  
+  return if game.player.is_dead?
+  
   View.display(outcome) if outcome
   
   if game.player.is_frozen?
-    View.display_turn_skip_message
+    View.display_turn_skip_message(game.player.name)
     player_turn_switcher(game)
+    View.wait()
     return
   end
 
   gem = View.gems_menu(game.player.inventory)
 
-  if gem[:target] == :single
+  if gem[:target] == nil
+    player_turn_switcher(game)
+    View.wait
+    return
+  elsif gem[:target] == :single
     target_id = View.target_menu(game.current_room.enemies, game.player)
     if target_id >= 0
       target = game.current_room.enemies[target_id]
@@ -95,10 +154,11 @@ def player_turn(game)
     outcome = game.player.use_aoe_gem(gem[:name], game.current_room.enemies)
   end
 
-  View.display outcome
-  View.display_room_status(game.current_room.enemies, game.player)
+  View.display(outcome)
 
   player_turn_switcher(game)
+  View.display_room_status(game.current_room.enemies, game.player)
+  View.wait()
 end
 
 def enemy_turn(game, id)
@@ -107,17 +167,22 @@ def enemy_turn(game, id)
 
   outcome = game.current_room.enemies[id].apply_status_effects
   View.display(outcome) if outcome
-  
+
   if game.current_room.enemies[id].is_frozen?
     View.display_turn_skip_message(game.current_room.enemies[id].name)
     enemy_turn_switcher game
+    View.wait
     return
   end
 
   outcome = AI.enemy_turn(game, id)
   View.display(outcome)
-  View.display_room_status(game.current_room.enemies, game.player)
+  
+  return if game.player.is_dead?
+
   enemy_turn_switcher(game)
+  View.display_room_status(game.current_room.enemies, game.player)
+  View.wait
 end
 
 def enemy_turn_switcher(game)
@@ -127,6 +192,12 @@ def enemy_turn_switcher(game)
   game.enemy_turn[:flag] = false
 end
 
+def reset_turns(game)
+  game.enemy_turn[:id] = 0
+  game.enemy_turn[:flag] = false
+  game.player_turn = true
+end
+
 def player_turn_switcher(game)
   unless game.player.is_hasted?
     game.player_turn = false
@@ -134,4 +205,17 @@ def player_turn_switcher(game)
   end
 end
 
-play()
+def game_over game
+  choice = View.display_game_over
+  case choice
+  when "Restart"
+    system("clear")
+    player_name = game.player.name
+    game = Game.new(player_name: player_name, starter_gems: STARTER_GEMS, path: PATH)
+    play game
+  when "Exit"
+    View.exit
+  end
+end
+
+start()

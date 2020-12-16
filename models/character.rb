@@ -50,7 +50,7 @@ class Character
         outcome += "Burning status effect: #{damage(v[:damage])}. "
         v[:turns] -= 1 
       when :regenerating
-        outcome += "Regenerating status effect: #{heal(v[:heal])}."
+        outcome += "Regenerating status effect: #{heal(v[:heal])}. "
         v[:turns] -= 1
       end
     end

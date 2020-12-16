@@ -19,7 +19,12 @@ module View
         print "\nEnter your name: "
         gets.chomp
     end
-
+    
+    def View.display_room_menu rooms
+      menu = rooms.each_with_index.map { |room, index| {name: room.description, value: index } }
+      @@prompt.select("Pick a room to enter", menu)
+    end
+    
     def View.display_inventory(inventory)
         table       = [1,2,3].zip(inventory)
         table       = @@table.new(["#", "Gem"], table)
@@ -34,6 +39,7 @@ module View
           value: {name: k, target: v[:gem].target}
         }
       end
+      menu << {name: "Skip turn", value: {name: nil, target: nil}}
       @@prompt.select("Select a gem to use", menu)
     end
 
@@ -60,10 +66,27 @@ module View
     def View.display outcome
       puts outcome
     end
+
+    def View.wait
+      puts "Press any key to continue"
+      gets
+      system("clear")
+    end
+
+    def View.display_game_over
+      puts "Game over!\n\n"
+      @@prompt.select("Would you like to try again?", ["Restart", "Exit"])
+    end
+
+    def View.exit
+      puts "Goodbye!"
+      system("exit")
+    end
 end
 
 def stringify_status(status)
-  status.reduce("") do |acc, (k, v)|
-    acc << "#{k} for #{v[:turns]} #{v[:turns] == 1 ? 'turn' : 'turns'} | "
+  arr = status.map do |k, v|
+    "#{k} for #{v[:turns]} #{v[:turns] == 1 ? 'turn' : 'turns'}"
   end
+  arr.join(" | ")
 end

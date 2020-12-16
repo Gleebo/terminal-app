@@ -26,7 +26,7 @@ class Player < Character
     def use_aoe_gem(gem_name, targets)
       outcome = @inventory[gem_name][:gem].action.call(targets)
       discard_gem(gem_name)
-      "#{@name} uses #{gem_name} on:\n#{outcome}"
+      "#{@name} uses #{gem_name}:\n#{outcome}"
     end
 
     private
