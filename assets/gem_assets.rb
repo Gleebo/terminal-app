@@ -159,7 +159,7 @@ module GemAssets
 
   def self.diamond
     CrystalGem.new(
-      name: "Oneshot aoe",
+      name: "Diamond",
       target: :aoe,
       description: "Deals heavy damage to everyone",
       action: proc { |targets|

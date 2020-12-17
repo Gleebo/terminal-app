@@ -16,11 +16,7 @@ def start
   path = PathAssets.path
   player_name = View.get_player_name
   View.greet(player_name)
-  game = Game.new(
-    player_name: player_name,
-    starter_gems: starter_gems,
-    path: path
-  )
+  game = Game.new(player_name: player_name, starter_gems: starter_gems, path: path)
   play game
 end
 

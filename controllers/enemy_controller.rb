@@ -8,7 +8,7 @@ module EnemyController
     return enemy_turn_switcher(game) if enemy.is_dead?
     View.display_room_status(game.current_room.enemies, game.player)
     enemy.reduce_cooldowns
-    
+
     outcome = enemy.apply_status_effects
     View.display(outcome) if outcome
     return enemy_turn_switcher(game) if enemy.is_dead?
@@ -19,7 +19,7 @@ module EnemyController
       View.wait
       return
     end
-  
+
     if enemy.attack_skill && enemy.attack_skill[:cd] == 0
       outcome = enemy.use_attack_skill(game.player)
     elsif enemy.defense_skill &&
@@ -33,7 +33,7 @@ module EnemyController
     end
 
     View.display(outcome)
-    
+
     return if game.player.is_dead?
   
     enemy_turn_switcher(game)
@@ -45,7 +45,14 @@ end
 
 def enemy_turn_switcher(game)
   game.player_turn = true
-  turn = game.enemy_turn[:id]
-  game.enemy_turn[:id] = turn == game.current_room.enemies.size - 1 ? 0 : turn + 1
+  enemies = game.current_room.enemies
+  id = game.enemy_turn[:id]
+  while true
+    id += 1
+    id = 0 if id == enemies.size
+    next if enemies[id].is_dead?
+    break
+  end
+  game.enemy_turn[:id] = id
   game.enemy_turn[:flag] = false
 end
