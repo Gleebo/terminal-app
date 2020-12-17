@@ -8,7 +8,7 @@ module RoomAssets
     malachite = GemAssets.malachite
     ruby = GemAssets.ruby
     Room.new(
-      description: "A room with a depiction of Quartz above the entrance",
+      description: "A room with a depiction of Clear Quartz above the entrance",
       enemies: [
         EnemyAssets.geodite,
         EnemyAssets.geodite
@@ -26,7 +26,7 @@ module RoomAssets
     malachite = GemAssets.malachite
     aquamarine = GemAssets.aquamarine
     Room.new(
-      description: "A room with a depiction of Heliodor above the entrance",
+      description: "A room with a depiction of Blue Quartz above the entrance",
       enemies: [
         EnemyAssets.geodite,
         EnemyAssets.malachita
@@ -46,7 +46,7 @@ module RoomAssets
     ruby = GemAssets.ruby
     opal = GemAssets.opal
     Room.new(
-      description: "A room with a depiction of Alexandrite above the entrance",
+      description: "A room with a depiction of Heliodor above the entrance",
       enemies: [
         EnemyAssets.geodite,
         EnemyAssets.malachita,
@@ -84,7 +84,7 @@ module RoomAssets
     diamond = GemAssets.diamond
 
     Room.new(
-      description: "A room with a depiction of Onyx above the entrance",
+      description: "A room with a depiction of Tourmaline above the entrance",
       enemies: [
         EnemyAssets.sapphiron,
         EnemyAssets.emeraldia,
@@ -110,5 +110,5 @@ module RoomAssets
       }
     )
   end
-  
+
 end

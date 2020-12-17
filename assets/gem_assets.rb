@@ -122,7 +122,7 @@ module GemAssets
       name: "Obsidian",
       description: "Aply cursed status to a single enemy",
       action: proc { |target|
-        taregt.add_status(:cursed, {turns: 1})
+        target.add_status(:cursed, {turns: 1})
       }
     )
   end

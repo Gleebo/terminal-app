@@ -9,7 +9,8 @@ module PlayerController
     View.display(outcome) if outcome
     
     return if player.is_dead?
-
+    View.display_room_status(game.current_room.enemies, game.player)
+    
     if game.player.is_frozen?
       View.display_turn_skip_message(player.name)
       player_turn_switcher(game)

@@ -36,7 +36,6 @@ end
 
 def battle game
   until game.current_room.is_clear? || game.player.is_dead?
-    View.display_room_status(game.current_room.enemies, game.player)
     sleep(0.2)
     if game.player_turn
       PlayerController.turn(game)

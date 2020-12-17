@@ -6,7 +6,7 @@ module EnemyController
     enemies = game.current_room.enemies
     
     return enemy_turn_switcher(game) if enemy.is_dead?
-    
+    View.display_room_status(game.current_room.enemies, game.player)
     enemy.reduce_cooldowns
     
     outcome = enemy.apply_status_effects
