@@ -1,10 +1,10 @@
 class Character
   attr_reader :name, :hp, :status, :total_hp
 
-  def initialize(name: "Default Name")
+  def initialize(name: "Default Name", total_hp: 100)
     @name     = name
-    @hp       = 100
-    @total_hp = @hp
+    @hp       = total_hp
+    @total_hp = total_hp
     @status   = {}
   end
 

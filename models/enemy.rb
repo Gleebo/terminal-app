@@ -7,9 +7,10 @@ class Enemy < Character
     name: "Enemy",
     attack_gem: nil,
     defense_gem: nil,
-    attack_power: 10
+    attack_power: 10,
+    total_hp: 100
   )
-    super(name: name)
+    super(name: name, total_hp: total_hp)
     @attack_skill  = attack_gem ? {name: attack_gem.name, action: attack_gem.action, cd: 0} : attack_gem
     @defense_skill = defense_gem ? {name: defense_gem.name, action: defense_gem.action, cd: 0} : defense_gem
     @attack_power  = attack_power

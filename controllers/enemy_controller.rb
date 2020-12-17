@@ -4,11 +4,15 @@ module EnemyController
   def EnemyController.turn(game)
     enemy   = game.current_room.enemies[game.enemy_turn[:id]]
     enemies = game.current_room.enemies
+    
+    return enemy_turn_switcher(game) if enemy.is_dead?
+    
     enemy.reduce_cooldowns
-  
+    
     outcome = enemy.apply_status_effects
     View.display(outcome) if outcome
-  
+    return enemy_turn_switcher(game) if enemy.is_dead?
+
     if enemy.is_frozen?
       View.display_turn_skip_message(enemy.name)
       enemy_turn_switcher game
@@ -16,7 +20,6 @@ module EnemyController
       return
     end
   
-    #outcome = AI.enemy_turn(game, id)
     if enemy.attack_skill && enemy.attack_skill[:cd] == 0
       outcome = enemy.use_attack_skill(game.player)
     elsif enemy.defense_skill &&
@@ -24,7 +27,7 @@ module EnemyController
           game.current_room.get_wounded_id
 
       target_id = game.current_room.get_wounded_id
-      outcome = enemy.use_defense_skill(enemies)
+      outcome = enemy.use_defense_skill(enemies[target_id])
     else
       outcome = enemy.attack(game.player)
     end

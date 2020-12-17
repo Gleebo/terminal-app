@@ -11,11 +11,11 @@ class Game
       @starter_gems = starter_gems
       @player_turn  = true
       @enemy_turn   = {id: 0, flag: true}
-      player.add_to_inventory(get_random_starter_gems)
+      @player.add_to_inventory(get_random_starter_gems)
     end
 
     private
     def get_random_starter_gems
-      @starter_gems.sample(6)
+      @starter_gems.to_a.sample(6).to_h
     end
 end

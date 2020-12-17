@@ -37,7 +37,7 @@ module PlayerController
 
     View.display(outcome)
 
-    player_turn_switcher(game)
+    player_turn_switcher(game) unless player.is_hasted?
     View.display_room_status(game.current_room.enemies, game.player)
     View.wait()
   end
