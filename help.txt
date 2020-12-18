@@ -1,0 +1,5 @@
+This a terminal based turn based RPG Battle Gems
+To play the game enter "ruby play.rb"
+To find out more about the game features you can type one of the following command:
+
+-info

@@ -66,4 +66,14 @@ def game_over game
   end
 end
 
-start()
+if ARGV.empty? 
+  start
+elsif ARGV[0] == "-h"
+  puts File.open("help.txt").read
+  
+elsif ARGV[0] == "-info"
+  puts File.open("info.txt").read
+else
+  puts "Command not found. -h command for help"
+end
+
