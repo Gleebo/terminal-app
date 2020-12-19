@@ -1,4 +1,4 @@
-# Rougue-like terminal game Battle Gems
+# Turn based RPG terminal game Battle Gems
 
 ## Puropose
 Battle Gems is a game that can be played in a terminal. The game is a turn based RPG where player goes from level to level to chose a room to enter. In each room there will be enemies to fight and a reward if player cealrs the room.
@@ -52,19 +52,51 @@ The main theme of the game is gemstones. Use gemstones to get various effects. F
 
  The initalize method accepts two `Gem` instances, in this case `ruby` and `amethyst`. The `action` property of gems becomes `attack_gem` and `defense_gem` properties of `amerub` instance.
 
-### Gem menu
+### Gems menu
 When it is player's turn they are presented with a menu of gems in theor inventory to choose from. The menu is implemented with TTY-prompt gem:
 
-![menu](menu.png)
+![menu](docs/menu.png)
 
 If the user presses `Ctrl + C` key combination during this the Error arises. This error is handled so that instead of wall of text the application simply exits.
-to do add Error handler
+
+```ruby
+menu = rooms.each_with_index.map { |room, index| {name: room.description, value: index } }
+begin
+  @@prompt.select("Pick a room to enter", menu)
+rescue TTY::Reader::InputInterrupt
+  quit
+end
+```
 
 ## User interaction outline
-To do
+To find out more about the game features, gems, enemies and rooms and status effects use the `ruby play.rb -info` command
+
+When the game starts you will be asked to enter your name. Use keyboard to type your name in the terminal and press Enter. Then the game begins and you will be given a choice of which room to enter. Pick a room form the menu using arrow keys on the keyboard and press Enter. When you enter a room the battle begins. Player always goes first and you will be prompted to chose a gem to use form your inventory. In a similar way to picking a room a menu will appear where you can use arrow keys to pick a gem. Once you choose a gem to use a target menu will appear whith enemy names in the same order as they appear on the table. At the start of each turn a table appears with names current hp and status effects list of each character in the room. Player's name is always the last one in the table. Once your turn is over the table will appear again with updated state of all character in the room.
+
+An error that can occur during the game is an unexpected exit with Ctrl + C command in the terminal during promt. This is handled to not display the standard error text and instead the game exits.
+
 ## Diagram
-To do
+![diagram](docs/t1a3.png)
 ## Implementation plan
-To do
+[Trello board link](https://trello.com/b/3885GjrL/battle-gems)
+![board](docs/trello-board.png)
+![player](docs/player.png)
+![player](docs/gems.png)
+![player](docs/enemy.png)
+![player](docs/room.png)
+![player](docs/game.png)
+
 ## Installation Instructions
-To do
+Clone the repository:
+`git clone https://github.com/Gleebo/terminal-app.git`
+Run the shell script in the folder containg repository:
+`./battle-gems.sh`
+The script will make sure that all the gems needed are installed
+Run the command in your terminal
+`ruby play.rb`
+
+Required software:
+ - MacOS or Linux or WSL
+ - Terminal
+ - bash
+ - Ruby version 2.7.2

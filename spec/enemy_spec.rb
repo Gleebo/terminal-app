@@ -6,14 +6,14 @@ describe "Enemy" do
 
   it "has powers" do
     enemy = Enemy.new
-    expect(enemy.attack(enemy)).to eq("Enemy attacks. Enemy takes 10 damage")
+    expect(enemy.attack(enemy)).to eq("Enemy attacks. Enemy takes 10 damage.")
   end
 
   it "can damage player" do
     player  = Player.new
     enemy = Enemy.new
     enemy.attack(player)
-    expect(player.hp).to eq(90)
+    expect(player.hp).to eq(240)
   end
 
   it "returns outcome string" do
@@ -22,7 +22,7 @@ describe "Enemy" do
       name: "Sapphire",
       description: "Deal damage and apply frozen status to a single target",
       action: proc { |target|
-        "#{target.damage(10)}. #{target.add_status(:frozen, {turns: 1})}"
+        "#{target.damage(10)} #{target.add_status(:frozen, {turns: 1})}"
       }
     )
     enemy = Enemy.new(attack_gem: sapphire)

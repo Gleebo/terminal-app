@@ -7,8 +7,17 @@ module View
   @@table     = TTY::Table
   @@renderer  = TTY::Table::Renderer::ASCII
   @@prompt    = TTY::Prompt.new
-
-  def View.greet(name)
+  
+  def self.get_player_name
+    print "\nEnter your name: "
+    begin
+      gets.chomp
+    rescue Interrupt
+      quit
+    end
+  end
+  
+  def self.greet(name)
     puts "#{name}, Welcome to the world of #{@@pastel.red("G") +
       @@pastel.green("e") +
       @@pastel.bright_green("m")+
@@ -16,11 +25,6 @@ module View
     puts "Press Enter to continue"
     gets
     system "clear"
-  end
-
-  def View.get_player_name
-      print "\nEnter your name: "
-      gets.chomp
   end
 
   def self.display_room_reward rewards
@@ -35,19 +39,16 @@ module View
     system("clear")
   end
   
-  def View.display_room_menu rooms
+  def self.display_room_menu rooms
     menu = rooms.each_with_index.map { |room, index| {name: room.description, value: index } }
-    @@prompt.select("Pick a room to enter", menu)
-  end
-  
-  def View.display_inventory(inventory)
-      table       = [1,2,3].zip(inventory)
-      table       = @@table.new(["#", "Gem"], table)
-      ascii_table = @@renderer.new(table)
-      puts ascii_table.render
+    begin
+      @@prompt.select("Pick a room to enter", menu)
+    rescue TTY::Reader::InputInterrupt
+      quit
+    end
   end
 
-  def View.gems_menu(inventory)
+  def self.gems_menu(inventory)
     menu = inventory.map do |k, v|
       {
         name: "#{k.ljust(15, " ")}x#{v[:quantity].to_s.ljust(7, ".")}#{v[:gem].description}",
@@ -55,18 +56,26 @@ module View
       }
     end
     menu << {name: "Skip turn", value: {name: nil, target: nil}}
-    @@prompt.select("Select a gem to use", menu)
+    begin
+      @@prompt.select("Select a gem to use", menu)
+    rescue TTY::Reader::InputInterrupt
+      quit
+    end
   end
 
-  def View.target_menu(targets, player)
+  def self.target_menu(targets, player)
     target_names = targets.each_with_index.map do |target, index|
       {name: target.name, hp: target.hp, value: index}
     end
     target_names << {name: player.name, value: -1}
-    @@prompt.select("Select target", target_names)
+    begin
+      @@prompt.select("Select target", target_names)
+    rescue TTY::Reader::InputInterrupt
+      quit
+    end
   end
 
-  def View.display_room_status (enemies, player)
+  def self.display_room_status (enemies, player)
     to_display = enemies.map { |v| [v.name, v.hp, stringify_status(v.status)]}
     to_display << [player.name, player.hp, stringify_status(player.status)]
     table = @@table.new(["Character", "HP", "Status"], to_display)
@@ -74,28 +83,28 @@ module View
     puts ascii_table.render
   end
 
-  def View.display_turn_skip_message name
+  def self.display_turn_skip_message name
     puts "#{name} skips turn because of #{@@pastel.blue("frozen")} status effect"
   end
 
-  def View.display outcome
+  def self.display outcome
     puts outcome
   end
 
-  def View.wait
+  def self.wait
     puts "Press any key to continue"
     gets
     system("clear")
   end
 
-  def View.display_game_over
+  def self.display_game_over
     puts "Game over!\n\n"
     @@prompt.select("Would you like to try again?", ["Restart", "Exit"])
   end
 
-  def View.exit
-    puts "Goodbye!"
-    system("exit")
+  def self.quit
+    puts "\nGoodbye!"
+    exit
   end
 end
 
