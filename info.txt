@@ -1,0 +1,22 @@
+In the game you use gems for various effects.
+Gems can be used from the menu and their effects vary form dealing damage
+allowing you going several turns in a row.
+
+The status effects that gems can apply:
+Burning:        Take damage at the beggining of each turn
+Frozen:         Skip a turn
+Protected:      Protect from taking damage
+Regenerating:   Heal hp at the beggining of each turn
+Cursed:         Take damage instead of healing
+Hasted:         Next turn will be yours again
+
+Enemies
+In the game enemies are based on gems as well and their powers can have effects
+of various gems. For example:
+Emeraldia has the power of Emerald and can heal allies
+Amerub is a fusion of Amethyst and Ruby and can apply protected and burning effects
+
+Rooms
+Rooms have enemies and you chose which room to enter at each level.
+Completing one room per level is enough to pregress further.
+When you clear a room from enemies you get rewards and healing.

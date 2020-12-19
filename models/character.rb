@@ -1,22 +1,21 @@
 class Character
   attr_reader :name, :hp, :status, :total_hp
 
-  def initialize(name: "Default Name")
+  def initialize(name: "Default Name", total_hp: 100)
     @name     = name
-    @hp       = 100
-    @total_hp = @hp
+    @hp       = total_hp
+    @total_hp = total_hp
     @status   = {}
   end
 
   def heal(amount)
     if @status[:cursed]
-      @hp -= amount
       @status[:cursed][:turns] -= 1
-      return "#{@name} and #{amount} of damage because the target is cursed"
+      return "#{damage(amount)}. Healing inverted by cursed status"
       status_over()
     end
       @hp += amount
-      @hp = 100 if @hp > 100
+      @hp = @total_hp if @hp > total_hp
       return "#{@name} heals #{amount} hp"
   end
 
@@ -25,11 +24,11 @@ class Character
       amount = 0
       @status[:protected][:turns] -= 1
       status_over()
-      return "#{@name} takes 0 damage becase of protected status"
+      return "#{@name} takes 0 damage. Damage mitigated by protected status."
     end
     @hp -= amount
     @hp = 0 if @hp < 0
-    return "#{@name} takes #{amount} damage"
+    return "#{@name} takes #{amount} damage."
   end
 
   def add_status(status_key, status_value)
@@ -47,10 +46,10 @@ class Character
     @status.each do |k, v|
       case k
       when :burning
-        outcome += "Burning status effect: #{damage(v[:damage])}. "
+        outcome += "Burning status effect: #{damage(v[:damage])} "
         v[:turns] -= 1 
       when :regenerating
-        outcome += "Regenerating status effect: #{heal(v[:heal])}."
+        outcome += "Regenerating status effect: #{heal(v[:heal])} "
         v[:turns] -= 1
       end
     end

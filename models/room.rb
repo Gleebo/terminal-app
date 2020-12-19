@@ -1,15 +1,16 @@
 class Room
-  attr_reader :description, :enemies
+  attr_reader :description, :enemies, :reward
 
-  def initialize(enemies: [], description: "a room")
+  def initialize(enemies: [], description: "a room", reward: [])
     @description  = description
     @enemies      = enemies
     #enemy_hash(enemies)
     @turns        = []
+    @reward = reward
   end
 
   def get_wounded_id
-    @enemies.index { |enemy| enemy.below_half_hp? }
+    @enemies.index { |enemy| enemy.below_half_hp? && enemy.hp != 0 }
   end
   
   def is_clear?
