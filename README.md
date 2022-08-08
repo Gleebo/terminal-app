@@ -1,6 +1,6 @@
 # Turn based RPG terminal game Battle Gems
 
-## Puropose
+## Purpose
 Battle Gems is a game that can be played in a terminal. The game is a turn based RPG where player goes from level to level to chose a room to enter. In each room there will be enemies to fight and a reward if player cealrs the room.
 
 The game is for users to use at their leisure and it is a fun little project of mine to develop my programming skills and imrove my understanding of OOP.
